@@ -124,9 +124,15 @@ DIACRITIC_MAP = {
 # ---------------------------------------------------------------------------
 
 UI_STRINGS = {
-    "en": {"celebration": "Great job!", "prompt": "Press:"},
-    "es": {"celebration": "¡Muy bien!", "prompt": "Pulsa:"},
-    "de": {"celebration": "Super gemacht!", "prompt": "Drücke:"},
+    "en": {"prompt": "Press:"},
+    "es": {"prompt": "Pulsa:"},
+    "de": {"prompt": "Drücke:"},
+}
+
+CELEBRATION_PHRASES = {
+    "en": ["Great job!", "Awesome!", "Well done!", "You did it!", "Amazing!"],
+    "es": ["¡Muy bien!", "¡Genial!", "¡Excelente!", "¡Lo lograste!", "¡Increíble!"],
+    "de": ["Super gemacht!", "Toll!", "Gut gemacht!", "Klasse!", "Wunderbar!"],
 }
 
 # Language display order (used for flag buttons)
@@ -157,3 +163,8 @@ def get_random_word(lang="en", exclude=None):
     word_list = WORDS[lang]
     choices = word_list if exclude is None else [w for w in word_list if w[0] != exclude]
     return random.choice(choices)
+
+
+def get_celebration_phrase(lang="en"):
+    """Return a random celebration phrase for *lang*."""
+    return random.choice(CELEBRATION_PHRASES[lang])

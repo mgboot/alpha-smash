@@ -49,8 +49,8 @@ def _init():
         _available = False
 
 
-def speak_word(word, lang):
-    """Start speaking *word* asynchronously.  Returns immediately."""
+def speak_celebration(word, lang, phrase):
+    """Speak the celebration sequence asynchronously: spell → word → phrase."""
     global _speaking
     _init()
     if not _available:
@@ -63,7 +63,8 @@ def speak_word(word, lang):
     if not voice:
         return
 
-    _speech_config.speech_synthesis_voice_name = voice
+    # Build the spelled-out form: "C. A. T."
+    spelled = ". ".join(word) + "."
 
     with _lock:
         _speaking = True
@@ -71,15 +72,18 @@ def speak_word(word, lang):
     def _run():
         global _speaking
         try:
-            synthesizer = speechsdk.SpeechSynthesizer(
-                speech_config=_speech_config,
-                audio_config=_audio_config,
-            )
-            result = synthesizer.speak_text_async(word).get()
-            if result.reason == speechsdk.ResultReason.Canceled:
-                details = result.cancellation_details
-                log.warning("TTS canceled: %s %s", details.reason,
-                            details.error_details or "")
+            _speech_config.speech_synthesis_voice_name = voice
+            for text in (spelled, word, phrase):
+                synthesizer = speechsdk.SpeechSynthesizer(
+                    speech_config=_speech_config,
+                    audio_config=_audio_config,
+                )
+                result = synthesizer.speak_text_async(text).get()
+                if result.reason == speechsdk.ResultReason.Canceled:
+                    details = result.cancellation_details
+                    log.warning("TTS canceled: %s %s", details.reason,
+                                details.error_details or "")
+                    break
         except Exception as exc:
             log.warning("TTS playback failed: %s", exc)
         finally:

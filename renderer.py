@@ -1,5 +1,6 @@
 """Rendering for Alpha Smash — all drawing logic."""
 
+import os
 import math
 import time
 import random
@@ -10,8 +11,8 @@ from config import (
     LETTER_FONT_SIZE, PROMPT_FONT_SIZE, EMOJI_FONT_SIZE, CODEWORD_FONT_SIZE,
     PULSE_SPEED, PULSE_SCALE_MIN, PULSE_SCALE_MAX,
     CONFETTI_COUNT,
-    FLAG_SIZE, FLAG_MARGIN, FLAG_GAP,
-    FLAG_HIGHLIGHT_COLOR, FLAG_HIGHLIGHT_WIDTH, FLAG_EMOJI,
+    FLAG_WIDTH, FLAG_HEIGHT, FLAG_MARGIN, FLAG_GAP,
+    FLAG_HIGHLIGHT_COLOR, FLAG_HIGHLIGHT_WIDTH, FLAG_IMAGES,
 )
 from words import LANGUAGES
 
@@ -61,9 +62,11 @@ class Renderer:
         self.confetti = []
         self._confetti_spawned = False
 
-        # Flag button rects and font
-        self.flag_font = pygame.font.SysFont("Segoe UI Emoji", FLAG_SIZE)
-        self.flag_rects = {}  # lang -> pygame.Rect
+        # Flag button rects and images
+        self._base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.flag_images = {}  # lang -> pygame.Surface
+        self.flag_rects = {}   # lang -> pygame.Rect
+        self._load_flags()
         self._build_flag_rects()
 
     def _get_wrong_font(self, size):
@@ -75,28 +78,30 @@ class Renderer:
     # Flag buttons
     # ------------------------------------------------------------------
 
+    def _load_flags(self):
+        """Load and scale flag images."""
+        for lang, path in FLAG_IMAGES.items():
+            full = os.path.join(self._base_dir, path)
+            img = pygame.image.load(full).convert_alpha()
+            self.flag_images[lang] = pygame.transform.smoothscale(
+                img, (FLAG_WIDTH, FLAG_HEIGHT)
+            )
+
     def _build_flag_rects(self):
         """Pre-compute flag button rectangles (top-right corner)."""
-        x = self.width - FLAG_MARGIN - FLAG_SIZE
+        x = self.width - FLAG_MARGIN - FLAG_WIDTH
         y = FLAG_MARGIN
         for lang in LANGUAGES:
-            self.flag_rects[lang] = pygame.Rect(x, y, FLAG_SIZE, FLAG_SIZE)
-            x -= FLAG_SIZE + FLAG_GAP
+            self.flag_rects[lang] = pygame.Rect(x, y, FLAG_WIDTH, FLAG_HEIGHT)
+            x -= FLAG_WIDTH + FLAG_GAP
 
     def _draw_flags(self, game):
-        """Draw flag emoji buttons with active-language highlight."""
+        """Draw flag image buttons with active-language highlight."""
         for lang, rect in self.flag_rects.items():
-            emoji = FLAG_EMOJI[lang]
-            text = self.flag_font.render(emoji, True, WHITE)
-            text_rect = text.get_rect(center=rect.center)
-            self.screen.blit(text, text_rect)
-
-            # Highlight active language
+            self.screen.blit(self.flag_images[lang], rect)
             if lang == game.current_lang:
-                pygame.draw.rect(
-                    self.screen, FLAG_HIGHLIGHT_COLOR, rect,
-                    FLAG_HIGHLIGHT_WIDTH,
-                )
+                pygame.draw.rect(self.screen, FLAG_HIGHLIGHT_COLOR, rect,
+                                 FLAG_HIGHLIGHT_WIDTH)
 
     def hit_test_flags(self, x, y):
         """Return language code if (x, y) hits a flag button, else None."""
@@ -220,9 +225,8 @@ class Renderer:
                                                      y + LETTER_FONT_SIZE + 80))
         self.screen.blit(emoji_surface, emoji_rect)
 
-        # Draw "Great job!" text (localised)
-        celebration_text = game.ui_strings["celebration"]
-        great = self.prompt_font.render(celebration_text, True, NEXT_LETTER_COLOR)
+        # Draw "Great job!" text (localised, varies per round)
+        great = self.prompt_font.render(game.celebration_phrase, True, NEXT_LETTER_COLOR)
         great_rect = great.get_rect(center=(self.width // 2, y - 60))
         self.screen.blit(great, great_rect)
 

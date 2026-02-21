@@ -3,7 +3,7 @@
 import random
 import time
 import tts
-from words import get_random_word, get_input_form, NUMBER_WORDS, UI_STRINGS, LANGUAGES
+from words import get_random_word, get_input_form, get_celebration_phrase, NUMBER_WORDS, UI_STRINGS, LANGUAGES
 from config import (
     CODEWORD_LENGTH, WRONG_LETTER_LIFETIME, MAX_WRONG_LETTERS,
     CELEBRATION_DURATION, DEFAULT_LANGUAGE,
@@ -63,6 +63,7 @@ class Game:
         # Celebration state
         self.celebrating = False
         self.celebration_start = 0
+        self.celebration_phrase = ""
 
         # Start first word
         self._next_word()
@@ -121,7 +122,11 @@ class Game:
                 if self.letter_index >= len(self.current_input_word):
                     self.celebrating = True
                     self.celebration_start = time.time()
-                    tts.speak_word(self.current_word, self.current_lang)
+                    self.celebration_phrase = get_celebration_phrase(self.current_lang)
+                    tts.speak_celebration(
+                        self.current_word, self.current_lang,
+                        self.celebration_phrase,
+                    )
                 return None
 
         # Wrong letter — add as floater

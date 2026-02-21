@@ -57,17 +57,18 @@ PULSE_SCALE_MAX = 1.1
 DEFAULT_LANGUAGE = "en"
 
 # Flag buttons (top-right corner)
-FLAG_SIZE = 50
+FLAG_WIDTH = 72
+FLAG_HEIGHT = 72
 FLAG_MARGIN = 15
-FLAG_GAP = 10
+FLAG_GAP = 20
 FLAG_HIGHLIGHT_COLOR = (255, 255, 100)
 FLAG_HIGHLIGHT_WIDTH = 3
 
-# Flag emoji per language
-FLAG_EMOJI = {
-    "en": "🇺🇸",
-    "es": "🇵🇷",
-    "de": "🇩🇪",
+# Flag image files per language (Twemoji, CC-BY 4.0)
+FLAG_IMAGES = {
+    "en": "assets/flag_us.png",
+    "es": "assets/flag_pr.png",
+    "de": "assets/flag_de.png",
 }
 
 # Azure Text-to-Speech

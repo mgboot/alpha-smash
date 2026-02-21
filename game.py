@@ -2,10 +2,11 @@
 
 import random
 import time
-from words import get_random_word, NUMBER_WORDS
+import tts
+from words import get_random_word, get_input_form, NUMBER_WORDS, UI_STRINGS, LANGUAGES
 from config import (
     CODEWORD_LENGTH, WRONG_LETTER_LIFETIME, MAX_WRONG_LETTERS,
-    CELEBRATION_DURATION,
+    CELEBRATION_DURATION, DEFAULT_LANGUAGE,
 )
 
 
@@ -42,8 +43,12 @@ class Game:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        # Current word
-        self.current_word = ""
+        # Language
+        self.current_lang = DEFAULT_LANGUAGE
+
+        # Current word (display form may contain diacritics)
+        self.current_word = ""       # display form
+        self.current_input_word = "" # ASCII input form
         self.current_emoji = ""
         self.letter_index = 0  # next letter to match
 
@@ -72,10 +77,18 @@ class Game:
 
     def _next_word(self):
         """Load the next word."""
-        word, emoji = get_random_word(exclude=self.current_word)
+        word, emoji = get_random_word(self.current_lang, exclude=self.current_word)
         self.current_word = word
+        self.current_input_word = get_input_form(word, self.current_lang)
         self.current_emoji = emoji
         self.letter_index = 0
+
+    def switch_language(self, lang):
+        """Switch to a new language and immediately load a new word."""
+        if lang == self.current_lang:
+            return
+        self.current_lang = lang
+        self._next_word()
 
     def handle_key(self, key_char):
         """Handle a keypress. Returns 'exit' if codeword completed, else None."""
@@ -100,14 +113,15 @@ class Game:
         if not upper.isalpha():
             return None
 
-        # Check if it matches the next expected letter
-        if self.letter_index < len(self.current_word):
-            if upper == self.current_word[self.letter_index]:
+        # Check if it matches the next expected letter (against input form)
+        if self.letter_index < len(self.current_input_word):
+            if upper == self.current_input_word[self.letter_index]:
                 self.letter_index += 1
                 # Word complete?
-                if self.letter_index >= len(self.current_word):
+                if self.letter_index >= len(self.current_input_word):
                     self.celebrating = True
                     self.celebration_start = time.time()
+                    tts.speak_word(self.current_word, self.current_lang)
                 return None
 
         # Wrong letter — add as floater
@@ -138,17 +152,22 @@ class Game:
         # Remove dead wrong letters
         self.wrong_letters = [wl for wl in self.wrong_letters if wl.alive]
 
-        # Check celebration timer
+        # Check celebration timer (wait for TTS to finish too)
         if self.celebrating:
             elapsed = time.time() - self.celebration_start
-            if elapsed >= CELEBRATION_DURATION:
+            if elapsed >= CELEBRATION_DURATION and not tts.is_speaking():
                 self.celebrating = False
                 self.wrong_letters.clear()
                 self._next_word()
 
     @property
+    def ui_strings(self):
+        """Return UI string dict for the current language."""
+        return UI_STRINGS[self.current_lang]
+
+    @property
     def filled_letters(self):
-        """Return list of (char, is_filled) for each letter in current word."""
+        """Return list of (display_char, is_filled) for each letter in current word."""
         result = []
         for i, ch in enumerate(self.current_word):
             result.append((ch, i < self.letter_index))
@@ -156,9 +175,9 @@ class Game:
 
     @property
     def next_letter(self):
-        """The next letter the player needs to press."""
-        if self.letter_index < len(self.current_word):
-            return self.current_word[self.letter_index]
+        """The next letter the player needs to press (input form, no diacritics)."""
+        if self.letter_index < len(self.current_input_word):
+            return self.current_input_word[self.letter_index]
         return None
 
     @property

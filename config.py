@@ -52,3 +52,30 @@ CODEWORD_LENGTH = 5
 PULSE_SPEED = 3.0  # Hz
 PULSE_SCALE_MIN = 0.95
 PULSE_SCALE_MAX = 1.1
+
+# Language
+DEFAULT_LANGUAGE = "en"
+
+# Flag buttons (top-right corner)
+FLAG_SIZE = 50
+FLAG_MARGIN = 15
+FLAG_GAP = 10
+FLAG_HIGHLIGHT_COLOR = (255, 255, 100)
+FLAG_HIGHLIGHT_WIDTH = 3
+
+# Flag emoji per language
+FLAG_EMOJI = {
+    "en": "🇺🇸",
+    "es": "🇵🇷",
+    "de": "🇩🇪",
+}
+
+# Azure Text-to-Speech
+# Set this to your Azure Speech resource endpoint (or leave empty to disable TTS)
+SPEECH_ENDPOINT = "https://dos-aoai-westus.cognitiveservices.azure.com/"
+
+TTS_VOICES = {
+    "en": "en-US-AvaNeural",
+    "es": "es-US-PalomaNeural",
+    "de": "de-DE-KatjaNeural",
+}

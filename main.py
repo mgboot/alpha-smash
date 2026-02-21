@@ -33,9 +33,25 @@ def main():
     running = True
     while running:
         for event in pygame.event.get():
-            # Ignore mouse events entirely
+            # Handle touch events for flag buttons
+            if event.type == pygame.FINGERDOWN:
+                tx = int(event.x * screen.get_width())
+                ty = int(event.y * screen.get_height())
+                lang = renderer.hit_test_flags(tx, ty)
+                if lang:
+                    game.switch_language(lang)
+                continue
+
+            # Allow mouse clicks only on flag buttons (for touchscreen)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                lang = renderer.hit_test_flags(event.pos[0], event.pos[1])
+                if lang:
+                    game.switch_language(lang)
+                continue
+
+            # Ignore other mouse events
             if event.type in (
-                pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN,
+                pygame.MOUSEMOTION,
                 pygame.MOUSEBUTTONUP, pygame.MOUSEWHEEL,
             ):
                 continue

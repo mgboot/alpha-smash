@@ -10,7 +10,10 @@ from config import (
     LETTER_FONT_SIZE, PROMPT_FONT_SIZE, EMOJI_FONT_SIZE, CODEWORD_FONT_SIZE,
     PULSE_SPEED, PULSE_SCALE_MIN, PULSE_SCALE_MAX,
     CONFETTI_COUNT,
+    FLAG_SIZE, FLAG_MARGIN, FLAG_GAP,
+    FLAG_HIGHLIGHT_COLOR, FLAG_HIGHLIGHT_WIDTH, FLAG_EMOJI,
 )
+from words import LANGUAGES
 
 
 class ConfettiParticle:
@@ -58,10 +61,49 @@ class Renderer:
         self.confetti = []
         self._confetti_spawned = False
 
+        # Flag button rects and font
+        self.flag_font = pygame.font.SysFont("Segoe UI Emoji", FLAG_SIZE)
+        self.flag_rects = {}  # lang -> pygame.Rect
+        self._build_flag_rects()
+
     def _get_wrong_font(self, size):
         if size not in self.wrong_fonts:
             self.wrong_fonts[size] = pygame.font.SysFont("Arial", size, bold=True)
         return self.wrong_fonts[size]
+
+    # ------------------------------------------------------------------
+    # Flag buttons
+    # ------------------------------------------------------------------
+
+    def _build_flag_rects(self):
+        """Pre-compute flag button rectangles (top-right corner)."""
+        x = self.width - FLAG_MARGIN - FLAG_SIZE
+        y = FLAG_MARGIN
+        for lang in LANGUAGES:
+            self.flag_rects[lang] = pygame.Rect(x, y, FLAG_SIZE, FLAG_SIZE)
+            x -= FLAG_SIZE + FLAG_GAP
+
+    def _draw_flags(self, game):
+        """Draw flag emoji buttons with active-language highlight."""
+        for lang, rect in self.flag_rects.items():
+            emoji = FLAG_EMOJI[lang]
+            text = self.flag_font.render(emoji, True, WHITE)
+            text_rect = text.get_rect(center=rect.center)
+            self.screen.blit(text, text_rect)
+
+            # Highlight active language
+            if lang == game.current_lang:
+                pygame.draw.rect(
+                    self.screen, FLAG_HIGHLIGHT_COLOR, rect,
+                    FLAG_HIGHLIGHT_WIDTH,
+                )
+
+    def hit_test_flags(self, x, y):
+        """Return language code if (x, y) hits a flag button, else None."""
+        for lang, rect in self.flag_rects.items():
+            if rect.collidepoint(x, y):
+                return lang
+        return None
 
     def render(self, game):
         """Main render method — draws everything."""
@@ -76,6 +118,7 @@ class Renderer:
             self._draw_word(game)
             self._draw_prompt(game)
 
+        self._draw_flags(game)
         self._draw_codeword(game)
         pygame.display.flip()
 
@@ -117,7 +160,8 @@ class Renderer:
     def _draw_prompt(self, game):
         """Draw 'Press: X' prompt above the word."""
         if game.next_letter:
-            prompt_text = f"Press:  {game.next_letter}"
+            prompt_label = game.ui_strings["prompt"]
+            prompt_text = f"{prompt_label}  {game.next_letter}"
             text = self.prompt_font.render(prompt_text, True, PROMPT_COLOR)
             rect = text.get_rect(center=(self.width // 2, self.height // 2 - LETTER_FONT_SIZE - 40))
             self.screen.blit(text, rect)
@@ -176,8 +220,9 @@ class Renderer:
                                                      y + LETTER_FONT_SIZE + 80))
         self.screen.blit(emoji_surface, emoji_rect)
 
-        # Draw "Great job!" text
-        great = self.prompt_font.render("Great job!", True, NEXT_LETTER_COLOR)
+        # Draw "Great job!" text (localised)
+        celebration_text = game.ui_strings["celebration"]
+        great = self.prompt_font.render(celebration_text, True, NEXT_LETTER_COLOR)
         great_rect = great.get_rect(center=(self.width // 2, y - 60))
         self.screen.blit(great, great_rect)
 

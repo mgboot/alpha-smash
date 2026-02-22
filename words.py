@@ -58,10 +58,10 @@ WORDS = {
         ("ZORRO", "🦊"), ("CANGREJO", "🦀"), ("VENADO", "🦌"),
         ("NIÑO", "👶"),
         # Comida
-        ("HUEVO", "🥚"), ("MAÍZ", "🌽"), ("TORTA", "🎂"), ("LECHE", "🥛"),
+        ("HUEVO", "🥚"), ("MAÍZ", "🌽"), ("BIZCOCHO", "🎂"), ("LECHE", "🥛"),
         ("ARROZ", "🍚"), ("MANZANA", "🍎"), ("UVA", "🍇"), ("LIMÓN", "🍋"),
         ("PIZZA", "🍕"), ("PAN", "🍞"), ("DULCE", "🍬"), ("GALLETA", "🍪"),
-        ("BANANA", "🍌"), ("CEREZA", "🍒"),
+        ("GUINEO", "🍌"), ("CEREZA", "🍒"),
         # Hogar y objetos
         ("CAMA", "🛏️"), ("TAZA", "🥤"), ("LLAVE", "🔑"), ("BOLA", "⚽"),
         ("LIBRO", "📖"), ("PUERTA", "🚪"), ("LUZ", "💡"), ("CASA", "🏠"),
@@ -71,7 +71,7 @@ WORDS = {
         ("SOL", "☀️"), ("LUNA", "🌙"), ("LLUVIA", "🌧️"), ("ÁRBOL", "🌳"),
         ("HOJA", "🍃"), ("NUBE", "☁️"), ("AGUA", "💧"), ("FLOR", "🌸"),
         # Vehículos
-        ("BUS", "🚌"), ("CARRO", "🚗"), ("BARCO", "⛵"), ("BICI", "🚲"),
+        ("GUAGUA", "🚌"), ("CARRO", "🚗"), ("BARCO", "⛵"), ("BICI", "🚲"),
         ("TREN", "🚂"), ("CAMIÓN", "🚛"), ("AVIÓN", "✈️"), ("COHETE", "🚀"),
         # Cuerpo y personas
         ("OREJA", "👂"), ("OJO", "👁️"), ("NARIZ", "👃"), ("MANO", "✋"),

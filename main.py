@@ -4,6 +4,7 @@ Run: python main.py
 Exit: type the numeric codeword shown in the bottom-right corner.
 """
 
+import os
 import sys
 import pygame
 from config import FPS, FULLSCREEN
@@ -11,7 +12,22 @@ from game import Game
 from renderer import Renderer
 
 
+def _load_dotenv():
+    """Load .env file from the project root if it exists."""
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if not os.path.isfile(env_path):
+        return
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip())
+
+
 def main():
+    _load_dotenv()
     pygame.init()
 
     # Set up full-screen display

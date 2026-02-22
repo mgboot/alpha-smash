@@ -72,8 +72,7 @@ FLAG_IMAGES = {
 }
 
 # Azure Text-to-Speech
-# Set this to your Azure Speech resource endpoint (or leave empty to disable TTS)
-SPEECH_ENDPOINT = "https://dos-aoai-westus.cognitiveservices.azure.com/"
+# Endpoint is loaded from .env file (see .env.example)
 
 TTS_VOICES = {
     "en": "en-US-AvaNeural",

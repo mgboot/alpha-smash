@@ -6,6 +6,7 @@ Gracefully degrades to silence when Azure is unavailable.
 """
 
 import logging
+import os
 import threading
 
 log = logging.getLogger(__name__)
@@ -27,8 +28,9 @@ def _init():
     _initialized = True
 
     from config import SPEECH_ENDPOINT
-    if not SPEECH_ENDPOINT:
-        log.info("TTS disabled — SPEECH_ENDPOINT not set in config.py")
+    endpoint = os.environ.get("SPEECH_ENDPOINT", "").strip()
+    if not endpoint:
+        log.info("TTS disabled — SPEECH_ENDPOINT not set in .env")
         return
 
     try:
@@ -39,7 +41,7 @@ def _init():
         token = credential.get_token(
             "https://cognitiveservices.azure.com/.default"
         ).token
-        _speech_config = speechsdk.SpeechConfig(endpoint=SPEECH_ENDPOINT)
+        _speech_config = speechsdk.SpeechConfig(endpoint=endpoint)
         _speech_config.authorization_token = token
         _audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
         _available = True

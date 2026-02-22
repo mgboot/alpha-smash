@@ -93,6 +93,50 @@ def speak_celebration(word, lang, phrase):
     threading.Thread(target=_run, daemon=True).start()
 
 
+def speak_language_name(lang):
+    """Speak the language name (e.g. 'Deutsch') in its own voice. Non-blocking."""
+    global _speaking
+    _init()
+    if not _available:
+        return
+
+    from config import TTS_VOICES
+    import azure.cognitiveservices.speech as speechsdk
+
+    voice = TTS_VOICES.get(lang)
+    if not voice:
+        return
+
+    names = {"en": "English", "es": "Español", "de": "Deutsch"}
+    text = names.get(lang, "")
+    if not text:
+        return
+
+    with _lock:
+        _speaking = True
+
+    def _run():
+        global _speaking
+        try:
+            _speech_config.speech_synthesis_voice_name = voice
+            synthesizer = speechsdk.SpeechSynthesizer(
+                speech_config=_speech_config,
+                audio_config=_audio_config,
+            )
+            result = synthesizer.speak_text_async(text).get()
+            if result.reason == speechsdk.ResultReason.Canceled:
+                details = result.cancellation_details
+                log.warning("TTS canceled: %s %s", details.reason,
+                            details.error_details or "")
+        except Exception as exc:
+            log.warning("TTS playback failed: %s", exc)
+        finally:
+            with _lock:
+                _speaking = False
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
 def is_speaking():
     """Return True while TTS audio is still playing."""
     with _lock:

@@ -90,6 +90,7 @@ class Game:
             return
         self.current_lang = lang
         self._next_word()
+        tts.speak_language_name(lang)
 
     def handle_key(self, key_char):
         """Handle a keypress. Returns 'exit' if codeword completed, else None."""

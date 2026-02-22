@@ -27,7 +27,6 @@ def _init():
         return
     _initialized = True
 
-    from config import SPEECH_ENDPOINT
     endpoint = os.environ.get("SPEECH_ENDPOINT", "").strip()
     if not endpoint:
         log.info("TTS disabled — SPEECH_ENDPOINT not set in .env")

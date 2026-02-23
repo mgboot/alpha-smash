@@ -17,6 +17,7 @@ _initialized = False
 _available = False
 
 _speaking = False
+_generation = 0
 _lock = threading.Lock()
 
 
@@ -51,35 +52,17 @@ def _init():
 
 
 def _build_spelling_ssml(word, voice, lang):
-    """Build SSML that spells out each letter with explicit IPA phonemes."""
-    from words import LETTER_PHONEMES
+    """Build SSML that spells out each letter using say-as characters."""
 
     # Derive xml:lang from voice name (e.g. "en-US" from "en-US-AvaNeural")
     parts = voice.split("-")
     xml_lang = f"{parts[0]}-{parts[1]}"
 
-    phonemes = LETTER_PHONEMES.get(lang, {})
-    ipa_parts = [phonemes.get(char) for char in word]
-
-    # Single <phoneme> with IPA syllable-boundary dots so the engine
-    # pauses between letters without the choppy start/stop of separate
-    # elements.
-    if all(ipa_parts):
-        body = (
-            f'<phoneme alphabet="ipa" ph="{".".join(ipa_parts)}">'
-            f'{word}</phoneme>'
-        )
-    else:
-        # Fallback: mix phoneme-tagged and plain characters
-        elements = []
-        for char, ph in zip(word, ipa_parts):
-            if ph:
-                elements.append(
-                    f'<phoneme alphabet="ipa" ph="{ph}">{char}</phoneme>'
-                )
-            else:
-                elements.append(char)
-        body = '<break time="350ms"/>'.join(elements)
+    body = (
+        '<prosody rate="-40%">'
+        f'<say-as interpret-as="characters">{word}</say-as>'
+        '</prosody>'
+    )
 
     return (
         '<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" '
@@ -89,13 +72,21 @@ def _build_spelling_ssml(word, voice, lang):
     )
 
 
+def stop():
+    """Cancel any in-flight TTS playback."""
+    global _generation, _speaking
+    with _lock:
+        _generation += 1
+        _speaking = False
+
+
 def speak_celebration(word, lang, phrase, article=None):
     """Speak the celebration sequence asynchronously: spell → word → phrase.
 
     When *article* is provided (e.g. "das" for German), TTS speaks
     ``"article word"`` instead of just ``word`` to reinforce grammatical gender.
     """
-    global _speaking
+    global _speaking, _generation
     _init()
     if not _available:
         return
@@ -117,6 +108,8 @@ def speak_celebration(word, lang, phrase, article=None):
         spoken_word = f"{article} {spoken_word}"
 
     with _lock:
+        _generation += 1
+        gen = _generation
         _speaking = True
 
     def _run():
@@ -124,7 +117,7 @@ def speak_celebration(word, lang, phrase, article=None):
         try:
             _speech_config.speech_synthesis_voice_name = voice
 
-            # Step 1: Spell out letters using SSML phonemes
+            # Step 1: Spell out letters using SSML
             synthesizer = speechsdk.SpeechSynthesizer(
                 speech_config=_speech_config,
                 audio_config=_audio_config,
@@ -137,6 +130,9 @@ def speak_celebration(word, lang, phrase, article=None):
             else:
                 # Steps 2-3: Speak word (with article) and celebration phrase
                 for text in (spoken_word, phrase):
+                    with _lock:
+                        if _generation != gen:
+                            return
                     synthesizer = speechsdk.SpeechSynthesizer(
                         speech_config=_speech_config,
                         audio_config=_audio_config,
@@ -151,14 +147,15 @@ def speak_celebration(word, lang, phrase, article=None):
             log.warning("TTS playback failed: %s", exc)
         finally:
             with _lock:
-                _speaking = False
+                if _generation == gen:
+                    _speaking = False
 
     threading.Thread(target=_run, daemon=True).start()
 
 
 def speak_language_name(lang):
     """Speak the language name (e.g. 'Deutsch') in its own voice. Non-blocking."""
-    global _speaking
+    global _speaking, _generation
     _init()
     if not _available:
         return
@@ -176,6 +173,8 @@ def speak_language_name(lang):
         return
 
     with _lock:
+        _generation += 1
+        gen = _generation
         _speaking = True
 
     def _run():
@@ -195,7 +194,8 @@ def speak_language_name(lang):
             log.warning("TTS playback failed: %s", exc)
         finally:
             with _lock:
-                _speaking = False
+                if _generation == gen:
+                    _speaking = False
 
     threading.Thread(target=_run, daemon=True).start()
 

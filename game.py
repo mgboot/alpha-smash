@@ -91,6 +91,10 @@ class Game:
         if lang == self.current_lang:
             return
         self.current_lang = lang
+        if self.celebrating:
+            self.celebrating = False
+            self.wrong_letters.clear()
+        tts.stop()
         self._next_word()
         tts.speak_language_name(lang)
 

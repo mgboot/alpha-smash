@@ -48,65 +48,78 @@ WORDS = {
 
     "es": [
         # Animales
-        ("GATO", "🐱"), ("PERRO", "🐶"), ("VACA", "🐄"), ("CERDO", "🐷"),
-        ("PATO", "🦆"), ("RANA", "🐸"), ("PEZ", "🐟"), ("OSO", "🐻"),
-        ("LEÓN", "🦁"), ("BÚHO", "🦉"), ("AVE", "🐦"), ("LOBO", "🐺"),
-        ("CABRA", "🐐"), ("CABALLO", "🐴"), ("RATÓN", "🐭"), ("OVEJA", "🐑"),
-        ("MONO", "🐵"), ("TIGRE", "🐯"), ("CEBRA", "🦓"), ("CONEJO", "🐰"),
-        ("PANDA", "🐼"), ("TORTUGA", "🐢"), ("POLLO", "🐔"), ("JIRAFA", "🦒"),
-        ("BALLENA", "🐳"), ("ABEJA", "🐝"), ("HORMIGA", "🐜"),
-        ("ZORRO", "🦊"), ("CANGREJO", "🦀"), ("VENADO", "🦌"),
-        ("NIÑO", "👶"),
+        ("GATO", "🐱", "el"), ("PERRO", "🐶", "el"), ("VACA", "🐄", "la"),
+        ("CERDO", "🐷", "el"), ("PATO", "🦆", "el"), ("RANA", "🐸", "la"),
+        ("PEZ", "🐟", "el"), ("OSO", "🐻", "el"), ("LEÓN", "🦁", "el"),
+        ("BÚHO", "🦉", "el"), ("AVE", "🐦", "el"), ("LOBO", "🐺", "el"),
+        ("CABRA", "🐐", "la"), ("CABALLO", "🐴", "el"), ("RATÓN", "🐭", "el"),
+        ("OVEJA", "🐑", "la"), ("MONO", "🐵", "el"), ("TIGRE", "🐯", "el"),
+        ("CEBRA", "🦓", "la"), ("CONEJO", "🐰", "el"), ("PANDA", "🐼", "el"),
+        ("TORTUGA", "🐢", "la"), ("POLLO", "🐔", "el"), ("JIRAFA", "🦒", "la"),
+        ("BALLENA", "🐳", "la"), ("ABEJA", "🐝", "la"), ("HORMIGA", "🐜", "la"),
+        ("ZORRO", "🦊", "el"), ("CANGREJO", "🦀", "el"), ("VENADO", "🦌", "el"),
+        ("NIÑO", "👶", "el"),
         # Comida
-        ("HUEVO", "🥚"), ("MAÍZ", "🌽"), ("BIZCOCHO", "🎂"), ("LECHE", "🥛"),
-        ("ARROZ", "🍚"), ("MANZANA", "🍎"), ("UVA", "🍇"), ("LIMÓN", "🍋"),
-        ("PIZZA", "🍕"), ("PAN", "🍞"), ("DULCE", "🍬"), ("GALLETA", "🍪"),
-        ("GUINEO", "🍌"), ("CEREZA", "🍒"),
+        ("HUEVO", "🥚", "el"), ("MAÍZ", "🌽", "el"), ("BIZCOCHO", "🎂", "el"),
+        ("LECHE", "🥛", "la"), ("ARROZ", "🍚", "el"), ("MANZANA", "🍎", "la"),
+        ("UVA", "🍇", "la"), ("LIMÓN", "🍋", "el"), ("PIZZA", "🍕", "la"),
+        ("PAN", "🍞", "el"), ("DULCE", "🍬", "el"), ("GALLETA", "🍪", "la"),
+        ("GUINEO", "🍌", "el"), ("CEREZA", "🍒", "la"),
         # Hogar y objetos
-        ("CAMA", "🛏️"), ("TAZA", "🥤"), ("LLAVE", "🔑"), ("BOLA", "⚽"),
-        ("LIBRO", "📖"), ("PUERTA", "🚪"), ("LUZ", "💡"), ("CASA", "🏠"),
-        ("SILLA", "🪑"), ("RELOJ", "🕐"), ("ZAPATO", "👟"),
-        ("ESTRELLA", "⭐"), ("TAMBOR", "🥁"), ("CAMPANA", "🔔"),
+        ("CAMA", "🛏️", "la"), ("TAZA", "🥤", "la"), ("LLAVE", "🔑", "la"),
+        ("BOLA", "⚽", "la"), ("LIBRO", "📖", "el"), ("PUERTA", "🚪", "la"),
+        ("LUZ", "💡", "la"), ("CASA", "🏠", "la"), ("SILLA", "🪑", "la"),
+        ("RELOJ", "🕐", "el"), ("ZAPATO", "👟", "el"), ("ESTRELLA", "⭐", "la"),
+        ("TAMBOR", "🥁", "el"), ("CAMPANA", "🔔", "la"),
         # Naturaleza
-        ("SOL", "☀️"), ("LUNA", "🌙"), ("LLUVIA", "🌧️"), ("ÁRBOL", "🌳"),
-        ("HOJA", "🍃"), ("NUBE", "☁️"), ("AGUA", "💧"), ("FLOR", "🌸"),
+        ("SOL", "☀️", "el"), ("LUNA", "🌙", "la"), ("LLUVIA", "🌧️", "la"),
+        ("ÁRBOL", "🌳", "el"), ("HOJA", "🍃", "la"), ("NUBE", "☁️", "la"),
+        ("AGUA", "💧", "el"), ("FLOR", "🌸", "la"),
         # Vehículos
-        ("GUAGUA", "🚌"), ("CARRO", "🚗"), ("BARCO", "⛵"), ("BICI", "🚲"),
-        ("TREN", "🚂"), ("CAMIÓN", "🚛"), ("AVIÓN", "✈️"), ("COHETE", "🚀"),
+        ("GUAGUA", "🚌", "la"), ("CARRO", "🚗", "el"), ("BARCO", "⛵", "el"),
+        ("BICI", "🚲", "la"), ("TREN", "🚂", "el"), ("CAMIÓN", "🚛", "el"),
+        ("AVIÓN", "✈️", "el"), ("COHETE", "🚀", "el"),
         # Cuerpo y personas
-        ("OREJA", "👂"), ("OJO", "👁️"), ("NARIZ", "👃"), ("MANO", "✋"),
-        ("PIE", "🦶"), ("BEBÉ", "👶"), ("REY", "👑"),
+        ("OREJA", "👂", "la"), ("OJO", "👁️", "el"), ("NARIZ", "👃", "la"),
+        ("MANO", "✋", "la"), ("PIE", "🦶", "el"), ("BEBÉ", "👶", "el"),
+        ("REY", "👑", "el"),
     ],
 
     "de": [
         # Tiere
-        ("KATZE", "🐱"), ("HUND", "🐶"), ("KUH", "🐄"), ("SCHWEIN", "🐷"),
-        ("ENTE", "🦆"), ("FROSCH", "🐸"), ("FISCH", "🐟"), ("BÄR", "🐻"),
-        ("LÖWE", "🦁"), ("EULE", "🦉"), ("VOGEL", "🐦"), ("WOLF", "🐺"),
-        ("ZIEGE", "🐐"), ("PFERD", "🐴"), ("MAUS", "🐭"), ("SCHAF", "🐑"),
-        ("AFFE", "🐵"), ("TIGER", "🐯"), ("ZEBRA", "🦓"), ("HASE", "🐰"),
-        ("PANDA", "🐼"), ("HUHN", "🐔"), ("GIRAFFE", "🦒"), ("WAL", "🐳"),
-        ("SCHLANGE", "🐍"), ("BIENE", "🐝"), ("AMEISE", "🐜"),
-        ("FUCHS", "🦊"), ("KREBS", "🦀"), ("REH", "🦌"),
+        ("KATZE", "🐱", "die"), ("HUND", "🐶", "der"), ("KUH", "🐄", "die"),
+        ("SCHWEIN", "🐷", "das"), ("ENTE", "🦆", "die"), ("FROSCH", "🐸", "der"),
+        ("FISCH", "🐟", "der"), ("BÄR", "🐻", "der"), ("LÖWE", "🦁", "der"),
+        ("EULE", "🦉", "die"), ("VOGEL", "🐦", "der"), ("WOLF", "🐺", "der"),
+        ("ZIEGE", "🐐", "die"), ("PFERD", "🐴", "das"), ("MAUS", "🐭", "die"),
+        ("SCHAF", "🐑", "das"), ("AFFE", "🐵", "der"), ("TIGER", "🐯", "der"),
+        ("ZEBRA", "🦓", "das"), ("HASE", "🐰", "der"), ("PANDA", "🐼", "der"),
+        ("HUHN", "🐔", "das"), ("GIRAFFE", "🦒", "die"), ("WAL", "🐳", "der"),
+        ("SCHLANGE", "🐍", "die"), ("BIENE", "🐝", "die"), ("AMEISE", "🐜", "die"),
+        ("FUCHS", "🦊", "der"), ("KREBS", "🦀", "der"), ("REH", "🦌", "das"),
         # Essen
-        ("EI", "🥚"), ("MAIS", "🌽"), ("KUCHEN", "🎂"), ("MILCH", "🥛"),
-        ("REIS", "🍚"), ("APFEL", "🍎"), ("TRAUBE", "🍇"), ("ZITRONE", "🍋"),
-        ("PIZZA", "🍕"), ("BROT", "🍞"), ("KEKS", "🍪"), ("BANANE", "🍌"),
-        ("KIRSCHE", "🍒"),
+        ("EI", "🥚", "das"), ("MAIS", "🌽", "der"), ("KUCHEN", "🎂", "der"),
+        ("MILCH", "🥛", "die"), ("REIS", "🍚", "der"), ("APFEL", "🍎", "der"),
+        ("TRAUBE", "🍇", "die"), ("ZITRONE", "🍋", "die"), ("PIZZA", "🍕", "die"),
+        ("BROT", "🍞", "das"), ("KEKS", "🍪", "der"), ("BANANE", "🍌", "die"),
+        ("KIRSCHE", "🍒", "die"),
         # Haus und Objekte
-        ("BETT", "🛏️"), ("TASSE", "🥤"), ("HUT", "🎩"), ("BALL", "⚽"),
-        ("GLOCKE", "🔔"), ("BUCH", "📖"), ("TÜR", "🚪"), ("LAMPE", "💡"),
-        ("SCHUH", "👟"), ("STERN", "⭐"), ("TROMMEL", "🥁"), ("HAUS", "🏠"),
-        ("STUHL", "🪑"), ("UHR", "🕐"),
+        ("BETT", "🛏️", "das"), ("TASSE", "🥤", "die"), ("HUT", "🎩", "der"),
+        ("BALL", "⚽", "der"), ("GLOCKE", "🔔", "die"), ("BUCH", "📖", "das"),
+        ("TÜR", "🚪", "die"), ("LAMPE", "💡", "die"), ("SCHUH", "👟", "der"),
+        ("STERN", "⭐", "der"), ("TROMMEL", "🥁", "die"), ("HAUS", "🏠", "das"),
+        ("STUHL", "🪑", "der"), ("UHR", "🕐", "die"),
         # Natur
-        ("SONNE", "☀️"), ("MOND", "🌙"), ("REGEN", "🌧️"), ("BAUM", "🌳"),
-        ("BLATT", "🍃"), ("WOLKE", "☁️"), ("WASSER", "💧"), ("BLUME", "🌸"),
+        ("SONNE", "☀️", "die"), ("MOND", "🌙", "der"), ("REGEN", "🌧️", "der"),
+        ("BAUM", "🌳", "der"), ("BLATT", "🍃", "das"), ("WOLKE", "☁️", "die"),
+        ("WASSER", "💧", "das"), ("BLUME", "🌸", "die"),
         # Fahrzeuge
-        ("BUS", "🚌"), ("AUTO", "🚗"), ("BOOT", "⛵"), ("ZUG", "🚂"),
-        ("RAKETE", "🚀"), ("FAHRRAD", "🚲"), ("FLUGZEUG", "✈️"),
+        ("BUS", "🚌", "der"), ("AUTO", "🚗", "das"), ("BOOT", "⛵", "das"),
+        ("ZUG", "🚂", "der"), ("RAKETE", "🚀", "die"), ("FAHRRAD", "🚲", "das"),
+        ("FLUGZEUG", "✈️", "das"),
         # Körper und Menschen
-        ("OHR", "👂"), ("AUGE", "👁️"), ("NASE", "👃"), ("HAND", "✋"),
-        ("BABY", "👶"), ("KÖNIG", "👑"),
+        ("OHR", "👂", "das"), ("AUGE", "👁️", "das"), ("NASE", "👃", "die"),
+        ("HAND", "✋", "die"), ("BABY", "👶", "das"), ("KÖNIG", "👑", "der"),
     ],
 }
 
@@ -159,10 +172,17 @@ def get_input_form(word, lang):
 
 
 def get_random_word(lang="en", exclude=None):
-    """Return a random (display_word, emoji) tuple for *lang*."""
+    """Return a random (display_word, emoji, article) tuple for *lang*.
+
+    *article* is the definite article (e.g. "der", "el") or ``None``
+    for languages without gendered articles (English).
+    """
     word_list = WORDS[lang]
     choices = word_list if exclude is None else [w for w in word_list if w[0] != exclude]
-    return random.choice(choices)
+    entry = random.choice(choices)
+    if len(entry) == 3:
+        return entry
+    return (entry[0], entry[1], None)
 
 
 def get_celebration_phrase(lang="en"):

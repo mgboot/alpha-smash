@@ -50,8 +50,12 @@ def _init():
         _available = False
 
 
-def speak_celebration(word, lang, phrase):
-    """Speak the celebration sequence asynchronously: spell → word → phrase."""
+def speak_celebration(word, lang, phrase, article=None):
+    """Speak the celebration sequence asynchronously: spell → word → phrase.
+
+    When *article* is provided (e.g. "das" for German), TTS speaks
+    ``"article word"`` instead of just ``word`` to reinforce grammatical gender.
+    """
     global _speaking
     _init()
     if not _available:
@@ -67,6 +71,9 @@ def speak_celebration(word, lang, phrase):
     # Build the spelled-out form: "C. A. T."
     spelled = ". ".join(word) + "."
 
+    # Prepend article for gendered languages (e.g. "das Auto")
+    spoken_word = f"{article} {word}" if article else word
+
     with _lock:
         _speaking = True
 
@@ -74,7 +81,7 @@ def speak_celebration(word, lang, phrase):
         global _speaking
         try:
             _speech_config.speech_synthesis_voice_name = voice
-            for text in (spelled, word, phrase):
+            for text in (spelled, spoken_word, phrase):
                 synthesizer = speechsdk.SpeechSynthesizer(
                     speech_config=_speech_config,
                     audio_config=_audio_config,

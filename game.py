@@ -50,6 +50,7 @@ class Game:
         self.current_word = ""       # display form
         self.current_input_word = "" # ASCII input form
         self.current_emoji = ""
+        self.current_article = None  # definite article for TTS (e.g. "das", "el")
         self.letter_index = 0  # next letter to match
 
         # Wrong letters floating on screen
@@ -78,10 +79,11 @@ class Game:
 
     def _next_word(self):
         """Load the next word."""
-        word, emoji = get_random_word(self.current_lang, exclude=self.current_word)
+        word, emoji, article = get_random_word(self.current_lang, exclude=self.current_word)
         self.current_word = word
         self.current_input_word = get_input_form(word, self.current_lang)
         self.current_emoji = emoji
+        self.current_article = article
         self.letter_index = 0
 
     def switch_language(self, lang):
@@ -126,7 +128,7 @@ class Game:
                     self.celebration_phrase = get_celebration_phrase(self.current_lang)
                     tts.speak_celebration(
                         self.current_word, self.current_lang,
-                        self.celebration_phrase,
+                        self.celebration_phrase, self.current_article,
                     )
                 return None
 

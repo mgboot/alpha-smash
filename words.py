@@ -152,6 +152,41 @@ CELEBRATION_PHRASES = {
 LANGUAGES = ["en", "es", "de"]
 
 # ---------------------------------------------------------------------------
+# IPA phonemes for letter names (used by TTS spelling via SSML)
+# ---------------------------------------------------------------------------
+
+LETTER_PHONEMES = {
+    "en": {
+        "A": "eɪ", "B": "bi", "C": "si", "D": "di", "E": "i",
+        "F": "ɛf", "G": "dʒi", "H": "eɪtʃ", "I": "aɪ", "J": "dʒeɪ",
+        "K": "keɪ", "L": "ɛl", "M": "ɛm", "N": "ɛn", "O": "oʊ",
+        "P": "pi", "Q": "kju", "R": "ɑɹ", "S": "ɛs", "T": "ti",
+        "U": "ju", "V": "vi", "W": "dʌbəlju", "X": "ɛks", "Y": "waɪ",
+        "Z": "zi",
+    },
+    "es": {
+        "A": "a", "B": "be", "C": "se", "D": "de", "E": "e",
+        "F": "ˈefe", "G": "xe", "H": "ˈatʃe", "I": "i", "J": "ˈxota",
+        "K": "ka", "L": "ˈele", "M": "ˈeme", "N": "ˈene", "Ñ": "ˈeɲe",
+        "O": "o", "P": "pe", "Q": "ku", "R": "ˈeɾe", "S": "ˈese",
+        "T": "te", "U": "u", "V": "ˈube", "W": "ˈuble.ˈdoble",
+        "X": "ˈekis", "Y": "i.ˈɡɾjeɣa", "Z": "ˈseta",
+        # Accented vowels are spoken as the base letter name
+        "Á": "a", "É": "e", "Í": "i", "Ó": "o", "Ú": "u",
+    },
+    "de": {
+        "A": "aː", "B": "beː", "C": "tseː", "D": "deː", "E": "eː",
+        "F": "ɛf", "G": "geː", "H": "haː", "I": "iː", "J": "jɔt",
+        "K": "kaː", "L": "ɛl", "M": "ɛm", "N": "ɛn", "O": "oː",
+        "P": "peː", "Q": "kuː", "R": "ɛʁ", "S": "ɛs", "T": "teː",
+        "U": "uː", "V": "faʊ", "W": "veː", "X": "ɪks", "Y": "ʏpsilɔn",
+        "Z": "tsɛt",
+        # Umlauted letters have their own names
+        "Ä": "aː.ˈʊm.laut", "Ö": "oː.ˈʊm.laut", "Ü": "uː.ˈʊm.laut",
+    },
+}
+
+# ---------------------------------------------------------------------------
 # Number words for codeword display (always English)
 # ---------------------------------------------------------------------------
 
